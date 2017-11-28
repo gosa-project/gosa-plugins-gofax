@@ -125,26 +125,21 @@ class faxreport extends plugin
         if(!isset($this->config->data['SERVERS']['FAX'])){
             msg_dialog::display(_("Error"), _("No FAX server found!"), ERROR_DIALOG);
             return($smarty->fetch(get_template_path('contents.tpl', TRUE)));
-        }elseif(!is_callable("mysql_connect")){
+        }elseif(!is_callable("mysqli_connect")){
             msg_dialog::display(_("Configuration error"), sprintf(
-                _("Missing %s PHP extension!"), "mysql"), WARNING_DIALOG);
+                _("Missing %s PHP extension!"), "mysqli"), WARNING_DIALOG);
             return($smarty->fetch(get_template_path('contents.tpl', TRUE)));
         }else{
             /* Connecting, selecting database */
             $cfg	= $this->config->data['SERVERS']['FAX'];
-            $link 	= @mysql_pconnect($cfg['SERVER'], $cfg['LOGIN'], $cfg['PASSWORD']);
+            $link 	= @mysqli_connect($cfg['SERVER'], $cfg['LOGIN'], $cfg['PASSWORD'], 'gofax');
             if ($link === FALSE){
                 msg_dialog::display(_("Error"), sprintf(
                     _("Cannot connect to %s database!"), "<b>".$cfg['SERVER'].":"."GOfax"."</b>"), ERROR_DIALOG);
                 return($smarty->fetch(get_template_path('contents.tpl', TRUE)));
             }
-            if (! @mysql_select_db("gofax")){
-                msg_dialog::display(_("Error"), sprintf(
-                    _("Cannot select %s database!"), "GOfax"), ERROR_DIALOG);
-                return($smarty->fetch(get_template_path('contents.tpl', TRUE)));
-            }
 
-            if (! mysql_query("SELECT * FROM faxlog;")){
+            if (! mysqli_query("SELECT * FROM faxlog;")){
                 msg_dialog::display(_("Error"), sprintf(
                     _("Cannot query %s database!"), "GOfax"), ERROR_DIALOG);
                 return($smarty->fetch(get_template_path('contents.tpl', TRUE)));
@@ -168,15 +163,15 @@ class faxreport extends plugin
                 "receiver_msn,pages,status_message,transfer_time FROM faxlog WHERE id='".$detail."';";
 
             $cfg= $this->config->data['SERVERS']['FAX'];
-            $result = @mysql_query($query);
+            $result = @mysqli_query($query);
             if ($result === false){
                 msg_dialog::display(_("Error"), sprintf(
                     _("Cannot query %s database!"), "GOfax"), ERROR_DIALOG);
                 @DEBUG (DEBUG_MYSQL, __LINE__, __FUNCTION__, __FILE__,$query, "Database query failed");
                 return($smarty->fetch(get_template_path('contents.tpl', TRUE)));
             }
-            $line = mysql_fetch_array($result, MYSQL_ASSOC);
-            mysql_close($link);
+            $line = mysqli_fetch_array($result, MYSQL_ASSOC);
+            mysqli_close($link);
 
             // Get dn to check ACLs for
             // Existing ldap-user -> use its dn  
@@ -272,11 +267,11 @@ class faxreport extends plugin
 
 
         $cfg= $this->config->data['SERVERS']['FAX'];
-        $link = @mysql_pconnect($cfg['SERVER'], $cfg['LOGIN'], $cfg['PASSWORD']);
+        $link = mysqli_connect($cfg['SERVER'], $cfg['LOGIN'], $cfg['PASSWORD'], 'gofax');
 
         // Get the results 
         @DEBUG (DEBUG_MYSQL, __LINE__, __FUNCTION__, __FILE__,$query, "Database query");
-        $result =@mysql_query($query_entries);
+        $result =@mysqli_query($query_entries);
         if ($result === false){
             msg_dialog::display(_("Error"), sprintf(_("Cannot query %s database!"), "GOfax"), ERROR_DIALOG);
             return($smarty->fetch(get_template_path('contents.tpl', TRUE)));
@@ -289,7 +284,7 @@ class faxreport extends plugin
         // Add found entries to result list.
         $report_list= array();
         $user_ids = array_flip($fax_users);
-        while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+        while ($line = mysqli_fetch_array($result, MYSQL_ASSOC)) {
 
             // Get dn to check ACLs for
             // Existing ldap-user -> use its dn  
@@ -362,7 +357,7 @@ class faxreport extends plugin
             }
             $report_list[] =  $str;
         }
-        mysql_close($link);
+        mysqli_close($link);
 
         $entry_count = count($report_list);
         if($this->start >=$entry_count) $this->start =0;
