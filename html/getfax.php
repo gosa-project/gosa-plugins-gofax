@@ -52,11 +52,11 @@ $link = mysqli_connect($cfg['SERVER'], $cfg['LOGIN'], $cfg['PASSWORD'], 'gofax')
 
 /* Permission to view? */
 $query = "SELECT id,uid FROM faxlog WHERE id = '".validate(stripcslashes($_GET['id']))."'";
-$result = mysqli_query($query) or die(_("Database query failed!"));
+$result = mysqli_query($link, $query) or die(_("Database query failed!"));
 $line = mysqli_fetch_array($result, MYSQL_ASSOC);
 
 $query = "SELECT id,fax_data FROM faxdata WHERE id = '".validate(stripcslashes($_GET['id']))."'";
-$result = mysqli_query($query) or die(_("Database query failed!"));
+$result = mysqli_query($link, $query) or die(_("Database query failed!"));
 
 /* Load pic */
 $data = mysqli_result ($result, 0, "fax_data");

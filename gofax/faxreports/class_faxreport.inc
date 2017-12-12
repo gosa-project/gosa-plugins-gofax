@@ -139,7 +139,7 @@ class faxreport extends plugin
                 return($smarty->fetch(get_template_path('contents.tpl', TRUE)));
             }
 
-            if (! mysqli_query("SELECT * FROM faxlog;")){
+            if (! mysqli_query($link, "SELECT * FROM faxlog;")){
                 msg_dialog::display(_("Error"), sprintf(
                     _("Cannot query %s database!"), "GOfax"), ERROR_DIALOG);
                 return($smarty->fetch(get_template_path('contents.tpl', TRUE)));
@@ -163,7 +163,7 @@ class faxreport extends plugin
                 "receiver_msn,pages,status_message,transfer_time FROM faxlog WHERE id='".$detail."';";
 
             $cfg= $this->config->data['SERVERS']['FAX'];
-            $result = @mysqli_query($query);
+            $result = @mysqli_query($link, $query);
             if ($result === false){
                 msg_dialog::display(_("Error"), sprintf(
                     _("Cannot query %s database!"), "GOfax"), ERROR_DIALOG);
@@ -271,7 +271,7 @@ class faxreport extends plugin
 
         // Get the results 
         @DEBUG (DEBUG_MYSQL, __LINE__, __FUNCTION__, __FILE__,$query, "Database query");
-        $result =@mysqli_query($query_entries);
+        $result =@mysqli_query($link, $query_entries);
         if ($result === false){
             msg_dialog::display(_("Error"), sprintf(_("Cannot query %s database!"), "GOfax"), ERROR_DIALOG);
             return($smarty->fetch(get_template_path('contents.tpl', TRUE)));
