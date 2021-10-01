@@ -25,6 +25,7 @@ class blocklist extends management
   var $plHeadline     = "FAX Blocklists";
   var $plDescription  = "Manage FAX number blocklists for incoming and outgoing FAX calls";
   var $plIcon  = "plugins/gofax/images/blocklists.png";
+  var $matIcon = "print_disabled";
 
   // Tab definition 
   protected $tabClass = "faxblocktabs";

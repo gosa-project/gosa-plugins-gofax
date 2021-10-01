@@ -185,12 +185,12 @@ class gofaxAccount extends plugin
       }
     }
 
-    if (isset($_POST['faxNumberSelect_cancel']) && $this->faxNumberSelect instanceOf faxNumberSelect){
+    if (isset($_POST['faxNumberSelect_cancel']) || isset($_POST['cancel-abort']) && $this->faxNumberSelect instanceOf faxNumberSelect){
       $this->dialog = $this->faxNumberSelect = FALSE;
     }
 
     /* Add alternatives from dialog */
-    if (isset($_POST['faxNumberSelect_save']) && $this->faxNumberSelect instanceOf faxNumberSelect){
+    if (isset($_POST['faxNumberSelect_save']) || isset($_POST['ok-save']) && $this->faxNumberSelect instanceOf faxNumberSelect){
       if($this->acl_is_writeable("facsimileAlternateTelephoneNumber",$edit_mode)){
 
         $entries = $this->faxNumberSelect->save();

@@ -6,6 +6,7 @@ class faxreport extends plugin
     var $plHeadline     = "FAX Reports";
     var $plDescription  = "View the FAX report or single documents that have been received";
     var $plIcon         = "plugins/gofax/images/reports.png";
+    var $matIcon        = "report";
 
     /* For internal use */
     var $start          = 0;
@@ -132,7 +133,7 @@ class faxreport extends plugin
         }else{
             /* Connecting, selecting database */
             $cfg	= $this->config->data['SERVERS']['FAX'];
-            $link 	= @mysqli_connect($cfg['SERVER'], $cfg['LOGIN'], $cfg['PASSWORD'], 'gofax');
+            $link 	= @mysqli_connect($cfg['SERVER'], $cfg['LOGIN'], $cfg['PASSWORD'], "gofax");
             if ($link === FALSE){
                 msg_dialog::display(_("Error"), sprintf(
                     _("Cannot connect to %s database!"), "<b>".$cfg['SERVER'].":"."GOfax"."</b>"), ERROR_DIALOG);
@@ -267,7 +268,7 @@ class faxreport extends plugin
 
 
         $cfg= $this->config->data['SERVERS']['FAX'];
-        $link = mysqli_connect($cfg['SERVER'], $cfg['LOGIN'], $cfg['PASSWORD'], 'gofax');
+        $link = @mysqli_connect($cfg['SERVER'], $cfg['LOGIN'], $cfg['PASSWORD'], "gofax");
 
         // Get the results 
         @DEBUG (DEBUG_MYSQL, __LINE__, __FUNCTION__, __FILE__,$query, "Database query");
