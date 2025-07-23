@@ -195,7 +195,7 @@ class blocklistGeneric extends plugin
     $ldap->rmDir($this->dn);
     new log("remove","gofaxlist/".get_class($this),$this->dn,array_keys($this->attrs),$ldap->get_error());
     if (!$ldap->success()){
-      msg_dialog::display(_("LDAP error"), msgPool::ldaperror($ldap->get_error(), $this->dn, 0, get_class()));
+      msg_dialog::display(_("LDAP error"), msgPool::ldaperror($ldap->get_error(), $this->dn, 0, __CLASS__));
     }
     $this->handle_post_events("remove");
   }
@@ -281,7 +281,7 @@ class blocklistGeneric extends plugin
     }
 
     if (!$ldap->success()){
-      msg_dialog::display(_("LDAP error"), msgPool::ldaperror($ldap->get_error(), $this->dn, 0, get_class()));
+      msg_dialog::display(_("LDAP error"), msgPool::ldaperror($ldap->get_error(), $this->dn, 0, __CLASS__));
     }
   }
 
@@ -376,7 +376,7 @@ class blocklistGeneric extends plugin
                   "plDepends"         => array(),
                   "plRequirements"=> array(
                       'ldapSchema' => array('goFaxRBlock' => '>=1.0.4','goFaxSBlock' => '>=1.0.4'),
-                      'onFailureDisablePlugin' => array(get_class(),'blocklist')
+                      'onFailureDisablePlugin' => array(__CLASS__,'blocklist')
                       ),
                   "plPriority"    => 0,
                   "plSection"     => array("administration" => _("Fax blacklists")),
@@ -407,5 +407,5 @@ class blocklistGeneric extends plugin
   }
 
 }
-// vim:tabstop=2:expandtab:shiftwidth=2:filetype=php:syntax:ruler:
+
 ?>

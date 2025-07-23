@@ -94,7 +94,7 @@ class goFaxServer extends goService {
                     "plCategory"    => array("server"),
                     "plRequirements"=> array(
                         'ldapSchema' => array('goFaxServer' => '>=2.7'),
-                        'onFailureDisablePlugin' => array(get_class(),'faxreport','gofaxAccount')
+                        'onFailureDisablePlugin' => array(__CLASS__,'faxreport','gofaxAccount')
                         ),
 
                     "plProvidedAcls"=> array(
@@ -107,5 +107,5 @@ class goFaxServer extends goService {
                     ));
     }
 }
-// vim:tabstop=2:expandtab:shiftwidth=2:filetype=php:syntax:ruler:
+
 ?>

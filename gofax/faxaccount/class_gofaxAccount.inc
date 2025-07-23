@@ -600,7 +600,7 @@ class gofaxAccount extends plugin
     new log("remove","users/".get_class($this),$this->dn,array_keys($this->attrs),$ldap->get_error());
 
     if (!$ldap->success()){
-      msg_dialog::display(_("LDAP error"), msgPool::ldaperror($ldap->get_error(), $this->dn, 0, get_class()));
+      msg_dialog::display(_("LDAP error"), msgPool::ldaperror($ldap->get_error(), $this->dn, 0, __CLASS__));
     }
 
     /* Optionally execute a command after we're done */
@@ -731,7 +731,7 @@ class gofaxAccount extends plugin
     }
 
     if (!$ldap->success()){
-      msg_dialog::display(_("LDAP error"), msgPool::ldaperror($ldap->get_error(), $this->dn, 0, get_class()));
+      msg_dialog::display(_("LDAP error"), msgPool::ldaperror($ldap->get_error(), $this->dn, 0, __CLASS__));
     }
 
     /* Optionally execute a command after we're done */
@@ -815,7 +815,7 @@ class gofaxAccount extends plugin
           "plCategory"      => array("users"),
           "plRequirements"=> array(
               'ldapSchema' => array('goFaxAccount' => '>=1.0.4'),
-              'onFailureDisablePlugin' => array(get_class(),'gofaxAccount','goFaxServer')
+              'onFailureDisablePlugin' => array(__CLASS__,'gofaxAccount','goFaxServer')
               ),
           "plOptions"       => array(),
 
@@ -930,5 +930,5 @@ class gofaxAccount extends plugin
   }
 }
 
-// vim:tabstop=2:expandtab:shiftwidth=2:filetype=php:syntax:ruler:
+
 ?>
